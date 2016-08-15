@@ -2,7 +2,7 @@
     "name": "Locadora-de-Filmes",
     "version": "1.0.0",
     "keywords": ["util", "functional", "server", "client", "browser"],
-    "author": "henriqueschmidt",
+    "author": "Henrique Rieger Schmidt",
     "contributors": [],
     "dependencies": {}
 }
