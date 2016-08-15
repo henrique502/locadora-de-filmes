@@ -1,30 +1,34 @@
-var http = require("http");
-var url = require("url");
-var mysql = require("mysql");
-var connection = mysql.createConnection({
-    host: "localhost",
-    user: "root", 
-    password: "", 
-    database: "db_locadora"
-}); 
+var express = require('express');
+var http = require('http');
+var app = express();
 
-
-
-console.log("Iniciando");
-
-var server = http.createServer(function (request, response) {
-    response.setHeader('Content-Type', 'application/json');
-    response.send(JSON.stringify({ a: 1 }));
+app.use(function(req, res, next){
+    res.header("Content-Type", "application/json");
     
-    
-    connection.connect();
-    connection.end();
-    response.end();
-    
+    // Carrega banco de dados
+    req.db = require("./config/database");
+    next();
 });
 
-server.listen(8080);
-console.log("127.0.0.1:8080");
+// Carrega rotas
+app.use('/', require('./config/router'));
 
 
+/* 404 */
+app.use(function(req, res, next) {
+  var err = new Error('Not Found');
+  err.status = 404;
+  next(err);
+});
 
+/* Erros */
+app.use(function(err, req, res, next) {
+  res.status(err.status || 500);
+  res.render('error', {
+    message: err.message,
+    error: err
+  });
+});
+
+// Inicia Servidor
+http.createServer(app).listen(3000);
