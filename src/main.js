@@ -1,26 +1,30 @@
 var http = require("http");
 var url = require("url");
 var mysql = require("mysql");
+var connection = mysql.createConnection({
+    host: "localhost",
+    user: "root", 
+    password: "", 
+    database: "db_locadora"
+}); 
+
+
 
 console.log("Iniciando");
 
-http.createServer(function (request, response) {
-    request.on("end", function(){
-        request.resume();
-        
-        
-        response.writeHead(200, {
-            // 'Content-Type': 'application/json'
-            'Content-Type': 'text/plain'
-        });
-        response.write("Hello World");
-        console.log("Hello World");
-        
-        response.end();
-    });
+var server = http.createServer(function (request, response) {
+    response.setHeader('Content-Type', 'application/json');
+    response.send(JSON.stringify({ a: 1 }));
     
-}).listen(8082);
-console.log("localhost:8082");
+    
+    connection.connect();
+    connection.end();
+    response.end();
+    
+});
+
+server.listen(8080);
+console.log("127.0.0.1:8080");
 
 
 

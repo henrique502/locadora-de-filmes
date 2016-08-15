@@ -1,8 +1,20 @@
 {
-    "name": "Locadora-de-Filmes",
-    "version": "1.0.0",
-    "keywords": ["util", "functional", "server", "client", "browser"],
-    "author": "Henrique Rieger Schmidt",
-    "contributors": [],
-    "dependencies": {}
+  "name": "Locadora",
+  "version": "1.0.0",
+  "keywords": [
+    "util",
+    "functional",
+    "server",
+    "client",
+    "browser"
+  ],
+  "author": "Henrique Rieger Schmidt",
+  "contributors": [],
+  "dependencies": {
+    "express": "^4.14.0",
+    "mysql": "^2.5.4"
+  },
+  "main": "main.js",
+  "devDependencies": {},
+  "description": ""
 }
