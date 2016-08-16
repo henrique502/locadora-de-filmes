@@ -36,15 +36,28 @@ var Auth = function(){
         });
     };
     
-    var decodeToken = function(req){
-        var token = req.url_parts.query.token;
-        if(!token) return null;
+    this.getToken = function(usuario, callback){
+        if(usuario.id <= 0) return;
         
-        token = decode(token).toString().trim();
-        token = JSON.parse(token);
-        if(typeof token !== 'object') return null;
+        Crypto.randomBytes(20, function(err, buffer) {
+            var auth = usuario.id + '#' + buffer.toString('hex');
+
+            new Usuario().updateToken(auth, usuario.id, function(err){
+                var token = encode(JSON.stringify(new Token({
+                    id: usuario.id,
+                    nome: usuario.nome,
+                    auth: auth
+                })));
+                
+                callback(token);
+            });
+        });
+    };
+    
+    this.clearToken = function(token){
+        new Usuario().getUsuarioFromToken()
         
-        return new Usuario().sanitize(token);
+        
     };
     
     var encode = function(string){

@@ -52,6 +52,27 @@ Usuario.prototype.updateToken = function(auth, usuarioId, callback){
     });
 };
 
+/**
+ * getUsuarioFromToken
+ * @param auth string
+ * @param usuarioId int
+ * @param callback function(err)
+ */
+Usuario.prototype.getUsuarioFromToken = function(auth, usuarioId, callback){
+    database.getConnection(function(err, connection) {
+ 
+        var sql = 'SELECT id, nome, email FROM usuarios WHERE id = ? AND auth = ?';
+        connection.query(sql, [usuarioId, auth], function(error, rows) {
+            if (error || rows.length !== 1){
+                callback(error, null);
+            } else {
+                callback(null, new Usuario().sanitize(rows[0]));
+            }
+        });
+
+        connection.release();
+    });
+};
 
 
 Usuario.prototype.sanitize = function (data) {  
