@@ -7,6 +7,12 @@ var Usuario = function (data) { this.data = data; };
 Usuario.prototype.data = {};
 Usuario.prototype.get = function (name) { return this.data[name]; };
 Usuario.prototype.set = function (name, value) { this.data[name] = value; };
+Usuario.prototype.sanitize = function (data) {  
+    data = data || {};
+    schema = schemas.Usuario;
+    return _.pick(_.defaults(data, schema), _.keys(schema)); 
+};
+
 
 /**
  * getUsuarioByEmailSenha
@@ -54,15 +60,14 @@ Usuario.prototype.updateToken = function(auth, usuarioId, callback){
 
 /**
  * getUsuarioFromToken
- * @param auth string
- * @param usuarioId int
+ * @param token object Token
  * @param callback function(err)
  */
-Usuario.prototype.getUsuarioFromToken = function(auth, usuarioId, callback){
+Usuario.prototype.getUsuarioFromToken = function(token, callback){
     database.getConnection(function(err, connection) {
  
         var sql = 'SELECT id, nome, email FROM usuarios WHERE id = ? AND auth = ?';
-        connection.query(sql, [usuarioId, auth], function(error, rows) {
+        connection.query(sql, [token.id, token.auth], function(error, rows) {
             if (error || rows.length !== 1){
                 callback(error, null);
             } else {
@@ -75,10 +80,5 @@ Usuario.prototype.getUsuarioFromToken = function(auth, usuarioId, callback){
 };
 
 
-Usuario.prototype.sanitize = function (data) {  
-    data = data || {};
-    schema = schemas.Usuario;
-    return _.pick(_.defaults(data, schema), _.keys(schema)); 
-};
 
 module.exports = Usuario;

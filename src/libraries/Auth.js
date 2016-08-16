@@ -3,68 +3,77 @@ var Response = require('./Response');
 var Usuario = require('../models/Usuario');
 var Token = require('../models/Token');
 
-var Auth = function(){  
-    
-    this.check = function(req, res){
-        var token = decodeToken(req);
-        
-        console.log(token);
-        
-        if(token){
+var Auth = function () {
+
+    this.check = function (req, res, callback) {
+        var token = decodeToken(req.url_parts.query.token);
+
+        new Usuario().getUsuarioFromToken(token, function (err, usuario) {
+            if (err || usuario === null) {
+                res.send(new Response().error(1, "Token inv\u00e1lido"));
+                res.end();
+            } else {
+                callback(usuario);
+            }
+
+        });
+    };
+
+    this.getToken = function (usuario, callback) {
+        if (usuario.id <= 0)
             return;
+
+        Crypto.randomBytes(20, function (err, buffer) {
+            var auth = usuario.id + '#' + buffer.toString('hex');
+
+            new Usuario().updateToken(auth, usuario.id, function (err) {
+                var token = JSON.stringify(new Token({
+                    id: usuario.id,
+                    nome: usuario.nome,
+                    auth: auth
+                }).data);
+
+                callback(encode(token));
+            });
+        });
+    };
+
+    this.clearToken = function (res, encodeToken, callback) {
+        var token = decodeToken(encodeToken);
+        
+        if(token === null){
+            callback(true);
         }
         
-        res.send(new Response().error(1, "Token inválido"));
-        res.end();
-    };
-    
-    this.getToken = function(usuario, callback){
-        if(usuario.id <= 0) return;
-        
-        Crypto.randomBytes(20, function(err, buffer) {
-            var auth = usuario.id + '#' + buffer.toString('hex');
-
-            new Usuario().updateToken(auth, usuario.id, function(err){
-                var token = encode(JSON.stringify(new Token({
-                    id: usuario.id,
-                    nome: usuario.nome,
-                    auth: auth
-                })));
-                
-                callback(token);
+        new Usuario().getUsuarioFromToken(token, function (err, usuario) {
+            new Usuario().updateToken(null, usuario.id, function (err) {
+                if (err) {
+                    callback(err);
+                } else {
+                    callback(null);
+                }
             });
         });
     };
-    
-    this.getToken = function(usuario, callback){
-        if(usuario.id <= 0) return;
-        
-        Crypto.randomBytes(20, function(err, buffer) {
-            var auth = usuario.id + '#' + buffer.toString('hex');
 
-            new Usuario().updateToken(auth, usuario.id, function(err){
-                var token = encode(JSON.stringify(new Token({
-                    id: usuario.id,
-                    nome: usuario.nome,
-                    auth: auth
-                })));
-                
-                callback(token);
-            });
-        });
+    var decodeToken = function (token) {
+        if (typeof token !== "string")
+            return null;
+
+        token = decode(token).toString().trim();
+
+        token = JSON.parse(token);
+        if (typeof token !== 'object')
+            return null;
+
+        return new Token().sanitize(token);
     };
-    
-    this.clearToken = function(token){
-        new Usuario().getUsuarioFromToken()
-        
-        
-    };
-    
-    var encode = function(string){
+
+    var encode = function (string) {
         return new Buffer(string).toString('base64');
     };
-    
-    var decode = function(string){
+
+    var decode = function (string) {
         return new Buffer(string, 'base64').toString('utf8');
     };
 };

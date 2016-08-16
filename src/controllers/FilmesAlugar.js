@@ -4,17 +4,10 @@ var Filme = require('../models/Filme');
 
 // Controller FilmesDevolver
 var FilmesAlugar = function(req, res){
-    
-    // valida token
-    if(!Auth.check(req, res)){ return; }
-    
-    
-    
-    
-    
-    
-    
-    res.send(new Response().success('FilmesAlugar'));
+    Auth.check(req, res, function(usuario){
+        console.log(usuario);
+        res.send(new Response().success('FilmesAlugar'));
+    });
 };
 
 

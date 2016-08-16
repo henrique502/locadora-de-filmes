@@ -44,9 +44,15 @@ Retorno:
 ```javascript
 {
   "status": "OK",
-  "data": {
-    
-  }
+  "data": [
+    {
+      "id": 1,
+      "titulo": "Star Wars: Episódio VIII",
+      "diretor": "Rian Johnson",
+      "copias": 6,
+      "alugados": 1
+    }
+  ]
 }
 ```
 
@@ -66,7 +72,7 @@ Retorno:
 
 ## Locação e Devolução
 
-### POST /api/filmes/alugar
+### POST /api/filmes/alugar?token={token}
 Parâmetros:
 * token string
 
@@ -78,7 +84,7 @@ Retorno:
 }
 ```
 
-### POST /api/filmes/devolver
+### POST /api/filmes/devolver?token={token}
 Parâmetros:
 * token string
 

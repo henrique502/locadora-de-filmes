@@ -11,7 +11,7 @@ var Logoff = function(req, res){
         return;
     }
     
-    Auth.clearToken(token, function(err){
+    Auth.clearToken(res, token, function(err){
         if(err){
             res.send(new Response().error(103, "Token inv\u00e1lido"));
         } else {
