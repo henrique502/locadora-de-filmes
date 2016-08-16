@@ -1,5 +1,6 @@
 var express = require('express');
 var http = require('http');
+var url = require('url');
 var app = express();
 
 app.use(function(req, res, next){
@@ -7,6 +8,7 @@ app.use(function(req, res, next){
     
     // Carrega banco de dados
     req.db = require("./config/database");
+    req.url_parts = url.parse(req.url, true);
     next();
 });
 
@@ -24,7 +26,7 @@ app.use(function(req, res, next) {
 /* Erros */
 app.use(function(err, req, res, next) {
   res.status(err.status || 500);
-  res.render('error', {
+  res.send({
     message: err.message,
     error: err
   });

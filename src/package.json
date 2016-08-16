@@ -1,11 +1,12 @@
 {
-  "name": "Locadora de Filmes",
+  "name": "src",
   "version": "1.0.0",
   "author": "Henrique Rieger Schmidt",
   "contributors": [],
   "dependencies": {
     "express": "^4.14.0",
-    "mysql": "^2.5.4"
+    "mysql": "^2.5.4",
+    "lodash": "^4.15.0"
   },
   "main": "main.js",
   "devDependencies": {},
