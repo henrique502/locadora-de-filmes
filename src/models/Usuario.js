@@ -33,6 +33,7 @@ Usuario.prototype.getUsuarioByEmailSenha = function(email, senha, callback){
 /**
  * updateToken
  * @param auth string
+ * @param usuarioId int
  * @param callback function(err)
  */
 Usuario.prototype.updateToken = function(auth, usuarioId, callback){

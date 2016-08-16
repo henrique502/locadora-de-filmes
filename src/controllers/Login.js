@@ -14,14 +14,16 @@ var Login = function(req, res){
     
     new Usuario().getUsuarioByEmailSenha(email, senha, function(err, usuario){
         if(err){
-            res.end(new Response().error(101, "Preencha email e/ou senha."));
+            res.end(new Response().error(102, "E-mail e/ou senha inv\u00e1lidos."));
         }
         
-        res.send(new Response().success({
-            token: Auth.getToken(usuario),
-            id: usuario.id,
-            nome: usuario.nome
-        }));
+        Auth.getToken(usuario, function(token){
+            res.send(new Response().success({
+                token: token,
+                id: usuario.id,
+                nome: usuario.nome
+            }));
+        });
     });
 };
 

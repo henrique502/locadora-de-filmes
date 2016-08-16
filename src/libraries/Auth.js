@@ -3,9 +3,6 @@ var Response = require('./Response');
 var Usuario = require('../models/Usuario');
 var Token = require('../models/Token');
 
-// eyJpZCI6MSwibm9tZSI6IkhlbnJpcXVlIFJpZWdlciIsImVtYWlsIjoiaGVucmlxdWVAaHJkZXYuY29tLmJyIn0=
-
-
 var Auth = function(){  
     
     this.check = function(req, res){
@@ -24,10 +21,10 @@ var Auth = function(){
     this.getToken = function(usuario, callback){
         if(usuario.id <= 0) return;
         
-        Crypto.randomBytes(48, function(err, buffer) {
-            var auth = buffer.toString('hex');
-            
-            usuario.updateToken(auth, usuario.id, function(err){
+        Crypto.randomBytes(20, function(err, buffer) {
+            var auth = usuario.id + '#' + buffer.toString('hex');
+
+            new Usuario().updateToken(auth, usuario.id, function(err){
                 var token = encode(JSON.stringify(new Token({
                     id: usuario.id,
                     nome: usuario.nome,
