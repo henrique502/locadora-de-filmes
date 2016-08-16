@@ -3,23 +3,89 @@
 
 
 ## Autenticação
-### POST /api/login
 
+### POST /api/login
 Parâmetros:
 * email string
 * senha string
 
 Retorno:
-```json
-  {
-    "status": "OK",
-    "data": {
-      "token": "21lIiwM2Y...xOWFiNSJ9fQ==",
-      "id": 1,
-      "nome": "Henrique Rieger"
-    }
+```javascript
+{
+  "status": "OK",
+  "data": {
+    "token": "21lIiwM2Y...xOWFiNSJ9fQ==",
+    "id": 1,
+    "nome": "Henrique Rieger"
   }
+}
 ```
 
 ### POST /api/logoff
+Parâmetros:
+* token string
 
+Retorno:
+```javascript
+{
+  "status": "OK",
+  "data": {}
+}
+```
+
+## Filmes
+
+### GET /api/filmes/lista
+Parâmetros:
+* token string
+* termo string (opcional)
+
+Retorno:
+```javascript
+{
+  "status": "OK",
+  "data": {
+    
+  }
+}
+```
+
+### GET /api/filmes/alugados
+Parâmetros:
+* token string
+
+Retorno:
+```javascript
+{
+  "status": "OK",
+  "data": {
+    
+  }
+}
+```
+
+## Locação e Devolução
+
+### POST /api/filmes/alugar
+Parâmetros:
+* token string
+
+Retorno:
+```javascript
+{
+  "status": "OK",
+  "data": {}
+}
+```
+
+### POST /api/filmes/devolver
+Parâmetros:
+* token string
+
+Retorno:
+```javascript
+{
+  "status": "OK",
+  "data": {}
+}
+```
