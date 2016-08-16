@@ -1,16 +1,20 @@
 var express = require('express');
 var http = require('http');
 var url = require('url');
+var bodyParser = require('body-parser');
 var app = express();
 
 app.use(function(req, res, next){
     res.header("Content-Type", "application/json");
     
-    // Carrega banco de dados
-    req.db = require("./config/database");
     req.url_parts = url.parse(req.url, true);
     next();
 });
+
+app.use(bodyParser.urlencoded({
+    extended: true
+}));
+
 
 // Carrega rotas
 app.use('/', require('./config/router'));

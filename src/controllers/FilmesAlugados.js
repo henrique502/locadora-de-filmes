@@ -5,7 +5,8 @@ var Filme = require('../models/Filme');
 // Controller FilmesAlugados
 var FilmesAlugados = function(req, res){
     
-    
+    // valida token
+    if(!Auth.check(req, res)){ return; }
     
     
     

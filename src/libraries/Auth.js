@@ -1,7 +1,10 @@
+var Crypto = require('crypto');
 var Response = require('./Response');
 var Usuario = require('../models/Usuario');
+var Token = require('../models/Token');
 
 // eyJpZCI6MSwibm9tZSI6IkhlbnJpcXVlIFJpZWdlciIsImVtYWlsIjoiaGVucmlxdWVAaHJkZXYuY29tLmJyIn0=
+
 
 var Auth = function(){  
     
@@ -11,13 +14,29 @@ var Auth = function(){
         console.log(token);
         
         if(token){
-            return true;
+            return;
         }
         
-        res.send(new Response().error(1, "Token inv·lido"));
+        res.send(new Response().error(1, "Token inv√°lido"));
+        res.end();
+    };
+    
+    this.getToken = function(usuario, callback){
+        if(usuario.id <= 0) return;
         
-        return false;
-        
+        Crypto.randomBytes(48, function(err, buffer) {
+            var auth = buffer.toString('hex');
+            
+            usuario.updateToken(auth, usuario.id, function(err){
+                var token = encode(JSON.stringify(new Token({
+                    id: usuario.id,
+                    nome: usuario.nome,
+                    auth: auth
+                })));
+                
+                callback(token);
+            });
+        });
     };
     
     var decodeToken = function(req){

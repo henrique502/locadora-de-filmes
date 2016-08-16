@@ -5,7 +5,8 @@ var Filme = require('../models/Filme');
 // Controller FilmesDevolver
 var FilmesDevolver = function(req, res){
     
-    
+    // valida token
+    if(!Auth.check(req, res)){ return; }
     
     
     

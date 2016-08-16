@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 
-/* Autenticação */
+/* Autenticacao */
 router.post('/api/login/', require('../controllers/Login'));
 router.post('/api/logoff/', require('../controllers/Logoff'));
 
@@ -9,7 +9,7 @@ router.post('/api/logoff/', require('../controllers/Logoff'));
 router.get('/api/filmes/lista', require('../controllers/FilmesLista'));
 router.get('/api/filmes/alugados', require('../controllers/FilmesAlugados'));
 
-/* Locação e Devolução */
+/* Locacao e Devolucao */
 router.post('/api/filmes/alugar', require('../controllers/FilmesAlugar'));
 router.post('/api/filmes/devolver', require('../controllers/FilmesDevolver'));
 

@@ -1,24 +1,55 @@
-var schemas = require("../config/schemas.js");  
+var schemas = require("../config/schemas.js");
+var database = require("../config/database");
 var _ = require("lodash");
 
 /* Usuario Model */
-var Usuario = function (data) {  
-    this.data = data;
-};
-
+var Usuario = function (data) { this.data = data; };
 Usuario.prototype.data = {};
+Usuario.prototype.get = function (name) { return this.data[name]; };
+Usuario.prototype.set = function (name, value) { this.data[name] = value; };
 
-Usuario.prototype.get = function (name) {  
-    return this.data[name];
+/**
+ * getUsuarioByEmailSenha
+ * @param email string
+ * @param senha string
+ * @param callback function(err, usuario)
+ */
+Usuario.prototype.getUsuarioByEmailSenha = function(email, senha, callback){
+    database.getConnection(function(err, connection) {
+ 
+        var sql = 'SELECT id, nome, email FROM usuarios WHERE email = ? AND senha = ?';
+        connection.query(sql, [email, senha], function(error, rows) {
+            if (error || rows.length !== 1){
+                callback(error, null);
+            } else {
+                callback(null, new Usuario().sanitize(rows[0]));
+            }
+        });
+
+        connection.release();
+    });
 };
 
-Usuario.prototype.set = function (name, value) {  
-    this.data[name] = value;
+/**
+ * updateToken
+ * @param auth string
+ * @param callback function(err)
+ */
+Usuario.prototype.updateToken = function(auth, usuarioId, callback){
+    database.getConnection(function(err, connection) {
+ 
+        var sql = 'UPDATE usuarios SET auth = ? WHERE id = ?';
+        connection.query(sql, [auth, usuarioId], function(error, rows) {
+            if (error){
+                callback(error);
+            } else {
+                callback(null);
+            }
+        });
+
+        connection.release();
+    });
 };
-
-
-
-
 
 
 
