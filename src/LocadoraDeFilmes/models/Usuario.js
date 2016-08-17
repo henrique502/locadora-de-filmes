@@ -61,7 +61,7 @@ Usuario.prototype.updateToken = function(auth, usuarioId, callback){
 /**
  * getUsuarioFromToken
  * @param token object Token
- * @param callback function(err)
+ * @param callback function(err, Usuario)
  */
 Usuario.prototype.getUsuarioFromToken = function(token, callback){
     database.getConnection(function(err, connection) {
@@ -79,6 +79,46 @@ Usuario.prototype.getUsuarioFromToken = function(token, callback){
     });
 };
 
+/**
+ * getUsuarioByEmail
+ * @param email string
+ * @param callback function(err, Usuario)
+ */
+Usuario.prototype.getUsuarioByEmail = function(email, callback){
+    database.getConnection(function(err, connection) {
+        console.log(email);
+        var sql = 'SELECT id, nome, email FROM usuarios WHERE email = ?';
+        connection.query(sql, [email.toLowerCase()], function(error, rows) {
+            if (error || rows.length !== 1){
+                callback(error, null);
+            } else {
+                callback(null, new Usuario().sanitize(rows[0]));
+            }
+        });
 
+        connection.release();
+    });
+};
+
+/**
+ * insertUsuario
+ * @param usuario object
+ * @param callback function(err, usuarioId)
+ */
+Usuario.prototype.insertUsuario = function(usuario, callback){
+    database.getConnection(function(err, connection) {
+ 
+        var sql = 'INSERT INTO usuarios (nome, email, senha) VALUES (?, ?, ?)';
+        connection.query(sql, [usuario.nome, usuario.email.toLowerCase(), usuario.senha], function(error, rows) {
+            if (error){
+                callback(error, null);
+            } else {
+                callback(null, rows.insertId);
+            }
+        });
+
+        connection.release();
+    });
+};
 
 module.exports = Usuario;

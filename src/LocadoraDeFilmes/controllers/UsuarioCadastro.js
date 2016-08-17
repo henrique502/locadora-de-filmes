@@ -12,55 +12,68 @@ var UsuarioCadastro = function(req, res){
     var validateNome = function(string){
         if(typeof string !== "string" || string.length < 3){
             res.send(new Response().error("Preencha campo nome."));
-            res.end();
+            return false;
         }
+        
+        return true;
     };
     
     var validateEmail = function(string){
         if(typeof string !== "string"){
             res.send(new Response().error("Preencha o campo e-mail."));
-            res.end();
+            return false;
         }
         
         if(!Auth.validaEmail(string)){
             res.send(new Response().error("Forne\u00e7a um e-mail v\u00e1lido."));
-            res.end();
+            return false;
         }
+        
+        return true;
     };
     
     var validateSenha = function(string){
         if(typeof string !== "string"){
             res.send(new Response().error("Preencha campo senha."));
-            res.end();
+            return false;
         }
         
         if(string.length < 5 || string.length > 16){
             res.send(new Response().error("A senha deve ter de 5 a 16 caracteres."));
-            res.end();
+            return false;
         }
+        
+        return true;
     };
     
     var registraUsuario = function(err, usuario){
         if(usuario === null){
-            
+            new Usuario().insertUsuario({
+                nome: nome,
+                email: email,
+                senha: senha
+            }, function(err, usuarioId){
+                if(err){
+                    res.send(new Response().error("Falha ao cadastrar novo usu\u00e1rio"));
+                } else {
+                    res.send(new Response().success({
+                        id: usuarioId
+                    }));
+                }
+            });
         } else {
             res.send(new Response().error("E-mail j\u00e1 em uso."));
-            res.end();
         }
-        
-        
-        
-        
     };
     
-    
-
     var init = function(){
-        validateNome(nome);
-        validateEmail(email);
-        validateSenha(senha);
-        
-        new Usuario().getUsuarioByEmail(email, registraUsuario);
+        if(
+            validateNome(nome) &&
+            validateEmail(email) &&
+            validateSenha(senha)
+        ){
+            new Usuario().getUsuarioByEmail(email, registraUsuario);
+        }
     };
     
     init();

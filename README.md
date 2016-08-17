@@ -1,7 +1,31 @@
 # Locadora-de-Filmes
 
+## Retorno de erros
 
-## Login e Logoff
+```javascript
+{
+  "status": "ERROR",
+  "msg": "texto"
+}
+```
+
+## Usuário
+
+### POST /api/usuario/cadastrar
+Corpo:
+* nome string
+* email string
+* senha string
+
+Retorno:
+```javascript
+{
+  "status": "OK",
+  "data": {
+    "id": 5 // ID do usuário novo
+  }
+}
+```
 
 ### POST /api/login
 Corpo:
@@ -14,7 +38,7 @@ Retorno:
   "status": "OK",
   "data": {
     "token": "21lIiwM2Y...xOWFiNSJ9fQ==",
-    "id": 1,
+    "id": 1, // id do usuário
     "nome": "Henrique Rieger"
   }
 }

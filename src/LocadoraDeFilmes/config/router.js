@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 
 /* Usuario */
-router.post('/api/usuario/cadastro', require('../controllers/UsuarioCadastro'));
+router.post('/api/usuario/cadastrar', require('../controllers/UsuarioCadastro'));
 
 /* Autenticacao */
 router.post('/api/login/', require('../controllers/Login'));

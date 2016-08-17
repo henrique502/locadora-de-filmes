@@ -11,13 +11,17 @@ var Logoff = function(req, res){
         return;
     }
     
-    Auth.clearToken(res, token, function(err){
+    var clearTokenCallback = function(err){
         if(err){
             res.send(new Response().error("Token inv\u00e1lido"));
         } else {
             res.send(new Response().success({}));
         }
-    });
+    };
+    
+    var init = function(){
+        Auth.clearToken(res, token, clearTokenCallback);
+    };
 };
 
 module.exports = Logoff;
