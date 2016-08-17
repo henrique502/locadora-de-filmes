@@ -37,7 +37,7 @@ var FilmesDevolver = function (req, res) {
     };
     
     var init = function (usr) {
-        if (validateFilmeId(req.body.filmeId)) {
+        if (validateFilmeId(parseInt(req.body.filmeId))) {
             usuario = usr;
             new Filme().getFilmeById(parseInt(req.body.filmeId), devolver);
         }

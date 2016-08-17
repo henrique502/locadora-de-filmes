@@ -40,17 +40,17 @@ var Auth = function () {
 
     this.clearToken = function (res, encodeToken, callback) {
         var token = decodeToken(encodeToken);
-        
+
         if(token === null){
-            callback(true);
+            callback(false);
         }
-        
+
         new Usuario().getUsuarioFromToken(token, function (err, usuario) {
             new Usuario().updateToken(null, usuario.id, function (err) {
                 if (err) {
-                    callback(err);
+                    callback(false);
                 } else {
-                    callback(null);
+                    callback(true);
                 }
             });
         });

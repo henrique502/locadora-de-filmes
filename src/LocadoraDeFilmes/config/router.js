@@ -5,8 +5,8 @@ var router = express.Router();
 router.post('/api/usuario/cadastrar', require('../controllers/UsuarioCadastro'));
 
 /* Autenticacao */
-router.post('/api/login/', require('../controllers/Login'));
-router.post('/api/logoff/', require('../controllers/Logoff'));
+router.post('/api/login', require('../controllers/Login'));
+router.post('/api/logoff', require('../controllers/Logoff'));
 
 /* Filmes */
 router.get('/api/filmes/lista', require('../controllers/FilmesLista'));
