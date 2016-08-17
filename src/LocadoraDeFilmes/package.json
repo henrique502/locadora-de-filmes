@@ -1,6 +1,6 @@
 {
-  "name": "src",
-  "version": "1.0.0",
+  "name": "LocadoraDeFilmes",
+  "version": "0.0.1",
   "author": "Henrique Rieger Schmidt",
   "contributors": [],
   "dependencies": {
