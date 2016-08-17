@@ -7,10 +7,9 @@ var Response = function(){
         };
     };
     
-    this.error = function(code, msg){
+    this.error = function(msg){
         return {
             status: "ERROR",
-            code: code,
             msg: msg
         };
         

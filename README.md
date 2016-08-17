@@ -1,11 +1,10 @@
 # Locadora-de-Filmes
 
 
-
-## Autenticação
+## Login e Logoff
 
 ### POST /api/login
-Parâmetros:
+Corpo:
 * email string
 * senha string
 
@@ -22,7 +21,7 @@ Retorno:
 ```
 
 ### POST /api/logoff
-Parâmetros:
+Corpo:
 * token string
 
 Retorno:
@@ -64,34 +63,54 @@ Retorno:
 ```javascript
 {
   "status": "OK",
-  "data": {
-    
-  }
+  "data": [
+    {
+      "id": 1,
+      "titulo": "Star Wars: Episódio VIII",
+      "diretor": "Rian Johnson"
+    }
+  ]
 }
 ```
 
 ## Locação e Devolução
 
-### POST /api/filmes/alugar?token={token}
+### POST /api/filmes/alugar
 Parâmetros:
 * token string
+
+Corpo:
+* filmeId int
 
 Retorno:
 ```javascript
 {
   "status": "OK",
-  "data": {}
+  "data": {
+    "id": 1,
+    "titulo": "Star Wars: Episódio VIII",
+    "diretor": "Rian Johnson",
+    "copias": 6
+  }
 }
 ```
 
-### POST /api/filmes/devolver?token={token}
+### POST /api/filmes/devolver
 Parâmetros:
 * token string
+
+Corpo:
+* filmeId int
 
 Retorno:
 ```javascript
 {
   "status": "OK",
-  "data": {}
+  "data": {
+    "id": 1,
+    "titulo": "Star Wars: Episódio VIII",
+    "diretor": "Rian Johnson",
+    "copias": 6
+  }
 }
 ```

@@ -5,11 +5,10 @@ var Filme = require('../models/Filme');
 // Controller FilmesAlugados
 var FilmesAlugados = function(req, res){
     Auth.check(req, res, function(usuario){
-        console.log(usuario);
-        res.send(new Response().success('FilmesAlugados'));
+        new Filme().getFilmesAlugadosByUsuario(usuario, function(lista){
+            res.send(new Response().success(lista));
+        });
     });
 };
-
-
 
 module.exports = FilmesAlugados;

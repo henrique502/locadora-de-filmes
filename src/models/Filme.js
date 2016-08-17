@@ -24,9 +24,7 @@ Filme.prototype.getFilmes = function(callback){
             sql+= 'FROM filmes LEFT JOIN locacao ON filmes.id = locacao.filme ';
             sql+= 'GROUP BY filmes.id ';
             sql+= 'ORDER BY filmes.titulo ASC';
-            
-            console.log(sql);
-            
+
         connection.query(sql, function(error, rows) {
             if (error) throw error;
             
@@ -65,6 +63,62 @@ Filme.prototype.getFilmesByTitulo = function(termo, callback){
             }
             
             callback(lista);
+        });
+
+        connection.release();
+    });
+};
+
+/**
+ * getFilmesAlugadosByUsuario
+ * @param usuario Usuario
+ * @param callback function(array)
+ */
+Filme.prototype.getFilmesAlugadosByUsuario = function(usuario, callback){
+    database.getConnection(function(err, connection) {
+
+        var sql = 'SELECT filmes.id, filmes.titulo, filmes.diretor ';
+            sql+= 'FROM filmes INNER JOIN locacao ON filmes.id = locacao.filme ';
+            sql+= 'WHERE locacao.usuario = ? ';
+            sql+= 'ORDER BY filmes.titulo ASC';
+
+        connection.query(sql, [usuario.id], function(error, rows) {
+            if (error) throw error;
+            
+            var lista = [];
+            for (var i in rows) {
+                lista.push(rows[i]);
+            }
+            
+            callback(lista);
+        });
+
+        connection.release();
+    });
+};
+
+/**
+ * getFilmeById
+ * @param filmeId int
+ * @param callback function(err, Filme)
+ */
+Filme.prototype.getFilmeById = function(filmeId, callback){
+    database.getConnection(function(err, connection) {
+
+        var sql = 'SELECT id, titulo, diretor, copias ';
+            sql+= 'FROM filmes WHERE id = ? ';
+
+        connection.query(sql, [filmeId], function(error, rows) {
+            if (error){
+                callback(error, null);
+            } else {
+            
+                if(rows.length === 1){
+                    callback(null, rows[0]);
+                } else {
+                    callback(null, null);
+                }
+            }
         });
 
         connection.release();

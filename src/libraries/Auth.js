@@ -10,7 +10,7 @@ var Auth = function () {
 
         new Usuario().getUsuarioFromToken(token, function (err, usuario) {
             if (err || usuario === null) {
-                res.send(new Response().error(1, "Token inv\u00e1lido"));
+                res.send(new Response().error("Token inv\u00e1lido"));
                 res.end();
             } else {
                 callback(usuario);
