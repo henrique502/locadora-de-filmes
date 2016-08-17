@@ -1,6 +1,9 @@
 var express = require('express');
 var router = express.Router();
 
+/* Usuario */
+router.post('/api/usuario/cadastro', require('../controllers/UsuarioCadastro'));
+
 /* Autenticacao */
 router.post('/api/login/', require('../controllers/Login'));
 router.post('/api/logoff/', require('../controllers/Logoff'));
